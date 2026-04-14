@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Nida Kashif Ali Siddiqui — AI Curriculum Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ─── TOKENS ─────────────────────────────────── */
+:root{
+  --bg:#07080d;--bg2:#0d0f18;--bg3:#13162a;
+  --gold:#c9a84c;--gold-l:#e8c97a;--gold-d:#7a5e1a;
+  --teal:#1e8078;--teal-l:#28b0a4;--teal-xl:#7dd4cc;
+  --rose:#932042;--rose-l:#c83060;
+  --cream:#f2ead8;--cream2:#d8cebc;
+  --muted:rgba(242,234,216,.55);
+  --border:rgba(201,168,76,.15);--border2:rgba(201,168,76,.28);
+  --wa:#25d366;--wa-d:#128c3f;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--cream);overflow-x:hidden;}
+
+/* ─── BG LAYERS ───────────────────────────────── */
+body::before{content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 15% 10%,rgba(201,168,76,.06) 0%,transparent 52%),
+    radial-gradient(ellipse at 85% 90%,rgba(30,128,120,.06) 0%,transparent 52%),
+    radial-gradient(ellipse at 50% 50%,rgba(147,32,66,.03) 0%,transparent 65%);
+  pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='.6' fill='rgba(201,168,76,.18)'/%3E%3C/svg%3E");
+  background-size:60px 60px;pointer-events:none;z-index:0;opacity:.4;}
+
+/* ─── WHATSAPP FLOATING BTN ───────────────────── */
+.wa-float{
+  position:fixed;bottom:32px;left:28px;z-index:9999;
+  display:flex;align-items:center;gap:0;
+  filter:drop-shadow(0 4px 20px rgba(37,211,102,.4));
+  transition:all .3s;
+}
+.wa-float:hover{filter:drop-shadow(0 6px 28px rgba(37,211,102,.6));transform:translateY(-3px);}
+.wa-btn{
+  background:var(--wa);color:#fff;
+  width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;position:relative;
+  border:3px solid rgba(255,255,255,.25);
+}
+.wa-btn svg{width:28px;height:28px;fill:#fff;}
+.wa-pulse{
+  position:absolute;inset:-6px;border-radius:50%;
+  border:2px solid var(--wa);
+  animation:waPulse 2.2s ease-out infinite;
+}
+.wa-pulse2{animation-delay:.7s;}
+@keyframes waPulse{0%{transform:scale(1);opacity:.7;}100%{transform:scale(1.7);opacity:0;}}
+.wa-tooltip{
+  background:var(--wa-d);color:#fff;
+  padding:8px 14px;border-radius:8px;
+  font-size:.82rem;font-weight:500;white-space:nowrap;
+  margin-right:10px;
+  opacity:0;transform:translateX(-8px);
+  transition:all .3s;pointer-events:none;
+}
+.wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0);}
+
+/* ─── NAV ─────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 60px;
+  background:rgba(7,8,13,.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:padding .3s;
+}
+nav.scrolled{padding:12px 60px;}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;
+  color:var(--gold);letter-spacing:1px;text-decoration:none;
+}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);font-size:.85rem;text-decoration:none;letter-spacing:.5px;transition:color .25s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{
+  background:var(--gold);color:var(--bg);
+  padding:9px 22px;border-radius:4px;font-size:.8rem;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;text-decoration:none;
+  border:none;cursor:pointer;transition:all .25s;
+}
+.nav-cta:hover{background:var(--gold-l);}
+.ham{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}
+.ham span{display:block;width:24px;height:2px;background:var(--cream);border-radius:2px;transition:all .3s;}
+.mob-menu{display:none;position:fixed;top:65px;left:0;right:0;background:rgba(7,8,13,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:24px 30px;z-index:999;}
+.mob-menu.open{display:block;}
+.mob-menu a{display:block;color:var(--muted);text-decoration:none;padding:12px 0;font-size:1rem;border-bottom:1px solid var(--border);}
+.mob-menu a:hover{color:var(--gold);}
+
+/* ─── GEO ORNAMENT ───────────────────────────── */
+.geo-wrap{position:absolute;inset:0;overflow:hidden;opacity:.035;pointer-events:none;}
+.geo-wrap svg{position:absolute;}
+.geo-tr{top:-5%;right:-5%;width:min(600px,80vw);}
+.geo-bl{bottom:-5%;left:-5%;width:min(480px,70vw);}
+
+/* ─── HERO ────────────────────────────────────── */
+.hero{
+  position:relative;z-index:1;min-height:100vh;
+  display:flex;align-items:center;
+  padding:120px 60px 80px;
+  overflow:hidden;
+}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(201,168,76,.08);border:1px solid var(--border2);
+  border-radius:30px;padding:8px 20px;font-size:.78rem;
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:30px;animation:fadeUp .8s ease both;
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--teal-l);animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+h1.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.2rem,7vw,7rem);font-weight:300;line-height:1.04;
+  color:#fff;animation:fadeUp .8s ease .12s both;
+}
+h1.hero-name em{color:var(--gold);font-style:italic;}
+.hero-urdu{
+  font-family:'Noto Nastaliq Urdu',serif;direction:rtl;
+  font-size:1.3rem;color:var(--gold-l);opacity:.7;
+  margin:18px 0 6px;animation:fadeUp .8s ease .2s both;
+}
+.hero-role{
+  font-size:1rem;color:var(--teal-l);letter-spacing:3px;
+  text-transform:uppercase;margin-bottom:24px;
+  animation:fadeUp .8s ease .25s both;
+}
+.hero-desc{
+  max-width:540px;font-size:.98rem;line-height:1.9;
+  color:var(--muted);font-weight:300;margin-bottom:40px;
+  animation:fadeUp .8s ease .32s both;
+}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s ease .4s both;}
+.btn-gold{background:var(--gold);color:var(--bg);padding:14px 34px;border-radius:4px;font-size:.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s;}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-2px);}
+.btn-outline{border:1px solid var(--border2);color:var(--cream);background:transparent;padding:14px 34px;border-radius:4px;font-size:.85rem;font-weight:400;letter-spacing:1px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .25s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{
+  position:absolute;bottom:48px;right:60px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;
+  animation:fadeUp .8s ease .55s both;
+}
+.stat{background:var(--bg2);padding:18px 26px;text-align:center;}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--gold);line-height:1;}
+.stat-l{font-size:.72rem;color:var(--muted);margin-top:4px;letter-spacing:.5px;}
+
+/* ─── SECTION WRAPPERS ────────────────────────── */
+.page-sec{position:relative;z-index:1;}
+.inner{max-width:1200px;margin:0 auto;padding:90px 60px;}
+.sec-label{display:flex;align-items:center;gap:14px;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent);}
+h2.sec-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,4vw,3rem);font-weight:300;color:#fff;line-height:1.2;margin-bottom:10px;}
+h2.sec-t em{color:var(--gold);font-style:italic;}
+.sec-d{font-size:.95rem;color:var(--muted);max-width:560px;line-height:1.9;margin-bottom:52px;font-weight:300;}
+
+/* ─── ABOUT ───────────────────────────────────── */
+.about-bg{background:var(--bg3);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.a-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;transition:border-color .3s;}
+.a-card:hover{border-color:var(--border2);}
+.a-card-t{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.a-card p{font-size:.88rem;color:var(--muted);line-height:1.9;}
+.a-card ul{padding:0;}
+.a-card li{list-style:none;font-size:.87rem;color:var(--muted);line-height:1.8;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.06);}
+.a-card li:last-child{border-bottom:none;}
+.a-card li::before{content:'→ ';color:var(--teal-l);}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.tag{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);border-radius:4px;padding:5px 13px;font-size:.75rem;color:var(--gold-l);letter-spacing:.5px;}
+
+/* ─── FILTER BAR ──────────────────────────────── */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px;}
+.flt{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:30px;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .22s;font-family:'DM Sans',sans-serif;}
+.flt:hover,.flt.on{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+
+/* ─── COURSE GRID ─────────────────────────────── */
+.c-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;}
+.c-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .3s;cursor:pointer;}
+.c-card:hover{transform:translateY(-5px);border-color:rgba(201,168,76,.4);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.c-card.hide{display:none;}
+.c-banner{height:130px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;position:relative;overflow:hidden;}
+.c-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--bg2));}
+.ci .c-banner{background:linear-gradient(135deg,#0e2010,#081a10);}
+.cq .c-banner{background:linear-gradient(135deg,#160e00,#221600);}
+.cs .c-banner{background:linear-gradient(135deg,#06101e,#0a1828);}
+.ct .c-banner{background:linear-gradient(135deg,#08081c,#10102e);}
+.cl .c-banner{background:linear-gradient(135deg,#18060e,#240810);}
+.cm .c-banner{background:linear-gradient(135deg,#081014,#0c1820);}
+.csoc .c-banner{background:linear-gradient(135deg,#140e00,#201600);}
+.c-body{padding:22px;}
+.c-cat{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:500;}
+.ci .c-cat{color:#5ec87a;}.cq .c-cat{color:var(--gold);}.cs .c-cat{color:#5a9ee0;}.ct .c-cat{color:#8c6ee8;}.cl .c-cat{color:#e06080;}.cm .c-cat{color:#5acec8;}.csoc .c-cat{color:#e09050;}
+.c-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:#fff;line-height:1.3;margin-bottom:4px;}
+.c-urdu{font-family:'Noto Nastaliq Urdu',serif;direction:rtl;font-size:.88rem;color:var(--gold-l);opacity:.65;margin-bottom:10px;line-height:1.7;}
+.c-desc{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:16px;}
+.c-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(201,168,76,.08);}
+.c-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.cpill{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:3px;padding:3px 9px;font-size:.68rem;color:var(--muted);}
+.c-sess{font-size:.75rem;color:var(--gold);font-weight:500;white-space:nowrap;}
+
+/* ─── MODAL ────────────────────────────────────── */
+.overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.overlay.on{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.96);transition:transform .3s;scrollbar-width:thin;scrollbar-color:var(--gold-d) transparent;}
+.overlay.on .modal{transform:scale(1);}
+.m-hdr{padding:28px 32px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;background:var(--bg2);z-index:10;}
+.m-close{background:rgba(255,255,255,.06);border:none;color:var(--cream);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+.m-close:hover{background:rgba(201,168,76,.2);color:var(--gold);}
+.m-body{padding:28px 32px;}
+.mod-blk{margin-bottom:20px;background:rgba(255,255,255,.02);border:1px solid rgba(201,168,76,.08);border-radius:10px;padding:18px 22px;}
+.mod-n{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.mod-t{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#fff;margin-bottom:10px;}
+.mod-items li{list-style:none;font-size:.85rem;color:var(--muted);line-height:1.8;padding:3px 0;}
+.mod-items li::before{content:'▸ ';color:var(--teal-l);font-size:.75rem;}
+
+/* ─── PROCESS ────────────────────────────────── */
+.process-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0;}
+.p-step{background:var(--bg2);padding:28px 22px;position:relative;}
+.p-step::after{content:attr(data-n);position:absolute;top:12px;right:14px;font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:rgba(201,168,76,.07);line-height:1;}
+.p-icon{font-size:1.7rem;margin-bottom:12px;}
+.p-title{font-weight:500;color:#fff;margin-bottom:7px;font-size:.92rem;}
+.p-desc{font-size:.8rem;color:var(--muted);line-height:1.8;}
+
+/* ─── TESTIMONIALS ───────────────────────────── */
+.testi-bg{background:var(--bg3);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+.t-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:26px;position:relative;}
+.t-card::before{content:'"';position:absolute;top:12px;left:22px;font-family:'Cormorant Garamond',serif;font-size:5rem;color:var(--gold);opacity:.1;line-height:1;}
+.t-stars{color:var(--gold);font-size:.8rem;margin-bottom:10px;}
+.t-text{font-size:.88rem;color:var(--muted);line-height:1.9;margin-bottom:18px;font-style:italic;}
+.t-name{font-weight:500;color:var(--cream);font-size:.85rem;}
+.t-role{font-size:.75rem;color:var(--gold);margin-top:2px;}
+
+/* ─── CONTACT ─────────────────────────────────── */
+.contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:70px;align-items:start;}
+.contact-info h2{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:#fff;line-height:1.2;margin-bottom:18px;}
+.contact-info h2 em{color:var(--gold);font-style:italic;}
+.contact-info p{font-size:.93rem;color:var(--muted);line-height:1.9;margin-bottom:32px;}
+.c-links{display:flex;flex-direction:column;gap:14px;}
+.c-link{display:flex;align-items:center;gap:14px;text-decoration:none;transition:all .25s;padding:12px 16px;border-radius:8px;border:1px solid transparent;}
+.c-link:hover{border-color:var(--border2);background:rgba(201,168,76,.04);}
+.c-link-ic{width:42px;height:42px;border-radius:8px;background:rgba(201,168,76,.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.c-link-txt{font-size:.88rem;color:var(--muted);transition:color .25s;}
+.c-link:hover .c-link-txt{color:var(--gold);}
+.c-link-lbl{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2px;}
+
+/* WhatsApp in contact */
+.wa-contact{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.25);}
+.wa-contact .c-link-ic{background:rgba(37,211,102,.15);border-color:rgba(37,211,102,.3);}
+.wa-contact:hover{border-color:rgba(37,211,102,.5)!important;background:rgba(37,211,102,.1)!important;}
+.wa-contact:hover .c-link-txt{color:var(--wa)!important;}
+
+/* FORM */
+.contact-form-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:36px;}
+.form-row{margin-bottom:20px;}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.f-label{display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.f-input,.f-select,.f-textarea{
+  width:100%;background:var(--bg2);border:1px solid var(--border);
+  color:var(--cream);border-radius:6px;padding:12px 16px;
+  font-size:.88rem;font-family:'DM Sans',sans-serif;
+  transition:border-color .25s;outline:none;
+}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--gold);}
+.f-select option{background:var(--bg2);}
+.f-textarea{resize:vertical;min-height:110px;}
+.f-required{color:var(--rose-l);}
+.form-notice{font-size:.75rem;color:var(--muted);margin-bottom:18px;line-height:1.7;}
+.form-notice a{color:var(--gold);text-decoration:none;}
+.btn-submit{
+  width:100%;background:var(--gold);color:var(--bg);padding:14px;
+  border:none;border-radius:6px;font-size:.88rem;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-submit:hover{background:var(--gold-l);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+.form-success{display:none;text-align:center;padding:32px;background:rgba(40,176,164,.08);border:1px solid rgba(40,176,164,.25);border-radius:10px;}
+.form-success.show{display:block;}
+.form-success-icon{font-size:2.5rem;margin-bottom:10px;}
+.form-success h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--teal-l);margin-bottom:8px;}
+.form-success p{font-size:.88rem;color:var(--muted);line-height:1.8;}
+.form-error{background:rgba(196,48,80,.1);border:1px solid rgba(196,48,80,.3);border-radius:6px;padding:12px 16px;font-size:.83rem;color:#e88090;margin-top:12px;display:none;}
+
+/* ─── FOOTER ─────────────────────────────────── */
+footer{position:relative;z-index:1;background:var(--bg);border-top:1px solid var(--border);padding:36px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;}
+.f-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);}
+.f-links{display:flex;gap:20px;}
+.f-links a{font-size:.8rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--gold);}
+.f-copy{font-size:.75rem;color:var(--muted);}
+
+/* ─── DIVIDER ────────────────────────────────── */
+.orn{display:flex;align-items:center;gap:12px;padding:0;margin:0;}
+.orn-l{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--border2),transparent);}
+.orn-d{width:8px;height:8px;background:var(--gold-d);border:1px solid var(--gold);transform:rotate(45deg);}
+
+/* ─── ANIMATIONS ─────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+
+/* ─── BACK TO TOP ─────────────────────────────── */
+.back-top{
+  position:fixed;bottom:32px;right:28px;z-index:999;
+  background:rgba(201,168,76,.12);border:1px solid var(--border2);
+  color:var(--gold);width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:1.1rem;transition:all .25s;
+  opacity:0;pointer-events:none;
+}
+.back-top.show{opacity:1;pointer-events:all;}
+.back-top:hover{background:var(--gold);color:var(--bg);}
+
+/* ─── RESPONSIVE ─────────────────────────────── */
+@media(max-width:960px){
+  nav{padding:16px 24px;}
+  nav.scrolled{padding:12px 24px;}
+  .nav-links,.nav-cta{display:none;}
+  .ham{display:flex;}
+  .hero{padding:100px 24px 180px;}
+  .hero-stats{position:static;grid-template-columns:repeat(3,1fr);margin-top:44px;width:100%;}
+  .inner{padding:70px 24px;}
+  .about-grid{grid-template-columns:1fr;}
+  .process-row{grid-template-columns:1fr 1fr;}
+  .contact-inner{grid-template-columns:1fr;}
+  footer{padding:28px 24px;flex-direction:column;text-align:center;}
+  .f-links{justify-content:center;}
+}
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:1fr;}
+  .process-row{grid-template-columns:1fr;}
+  .c-grid{grid-template-columns:1fr;}
+  .form-row-2{grid-template-columns:1fr;}
+  .m-hdr,.m-body{padding:20px 18px;}
+  .contact-form-wrap{padding:24px 18px;}
+  .wa-float{bottom:20px;left:16px;}
+  .back-top{bottom:20px;right:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     WHATSAPP FLOATING BUTTON
+════════════════════════════════════════════════ -->
+<div class="wa-float">
+  <div class="wa-tooltip">Chat on WhatsApp</div>
+  <a class="wa-btn" href="https://wa.me/923012686478?text=Hello%20Nida!%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20curriculum%20project." target="_blank" rel="noopener" aria-label="WhatsApp Nida">
+    <div class="wa-pulse"></div>
+    <div class="wa-pulse wa-pulse2"></div>
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</div>
+
+<!-- Back to top -->
+<a class="back-top" id="backTop" href="#top" aria-label="Back to top">↑</a>
+
+<!-- ═══════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════════ -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#top">NKAS</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Hire Me</a>
+  <button class="ham" id="hamBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#courses" onclick="closeMob()">Courses</a>
+  <a href="#process" onclick="closeMob()">Process</a>
+  <a href="#testimonials" onclick="closeMob()">Reviews</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+  <a href="https://wa.me/923012686478" target="_blank" style="color:var(--wa);">💬 WhatsApp</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="geo-wrap">
+    <svg class="geo-tr" viewBox="0 0 600 600" fill="none"><g stroke="#c9a84c" stroke-width=".7"><polygon points="300,50 550,175 550,425 300,550 50,425 50,175"/><polygon points="300,80 520,190 520,410 300,520 80,410 80,190"/><polygon points="300,110 490,205 490,395 300,490 110,395 110,205"/><circle cx="300" cy="300" r="85"/><circle cx="300" cy="300" r="150"/><circle cx="300" cy="300" r="215"/><line x1="300" y1="50" x2="300" y2="550"/><line x1="50" y1="175" x2="550" y2="425"/><line x1="550" y1="175" x2="50" y2="425"/></g></svg>
+    <svg class="geo-bl" viewBox="0 0 480 480" fill="none"><g stroke="#1e8078" stroke-width=".7"><rect x="60" y="60" width="360" height="360" transform="rotate(45 240 240)" fill="none"/><rect x="90" y="90" width="300" height="300" transform="rotate(45 240 240)" fill="none"/><rect x="120" y="120" width="240" height="240" transform="rotate(45 240 240)" fill="none"/><circle cx="240" cy="240" r="70"/><circle cx="240" cy="240" r="120"/><circle cx="240" cy="240" r="170"/></g></svg>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="live-dot"></span>AI-Powered Curriculum Designer &amp; Researcher</div>
+    <h1 class="hero-name">Nida<br/><em>Kashif Ali</em><br/>Siddiqui</h1>
+    <div class="hero-urdu">نداء کاشف علی صدیقی — نصاب ساز اور تعلیمی محقق</div>
+    <div class="hero-role">Islamic &amp; Academic Curriculum Architect</div>
+    <p class="hero-desc">Designing transformative educational experiences at the intersection of Islamic scholarship and modern pedagogy — leveraging AI to craft rigorous, culturally grounded curricula across 15+ subject domains.</p>
+    <div class="hero-btns">
+      <a href="#courses" class="btn-gold">View Portfolio</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+      <a href="https://wa.me/923012686478?text=Hello%20Nida!%20I%20would%20like%20to%20discuss%20a%20curriculum%20project." target="_blank" class="btn-outline" style="border-color:rgba(37,211,102,.4);color:var(--wa);" rel="noopener">💬 WhatsApp Me</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Courses Designed</div></div>
+      <div class="stat"><div class="stat-n">1000+</div><div class="stat-l">Learning Hours</div></div>
+      <div class="stat"><div class="stat-n">15+</div><div class="stat-l">Subject Domains</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════════ -->
+<section class="page-sec about-bg" id="about">
+<div class="inner">
+  <div class="sec-label reveal">01 — About</div>
+  <h2 class="sec-t reveal">Bridging Tradition<br/>&amp; <em>Innovation</em></h2>
+  <p class="sec-d reveal">A curriculum architect who believes every learner deserves a structured, meaningful, and beautifully designed educational journey.</p>
+  <div class="about-grid reveal">
+    <div>
+      <div class="a-card" style="margin-bottom:18px;">
+        <div class="a-card-t">📋 What I Do</div>
+        <ul>
+          <li>Design full course curricula from scratch using AI research methodology</li>
+          <li>Synthesize classical Islamic texts with modern instructional design</li>
+          <li>Create structured lesson plans with clear learning objectives</li>
+          <li>Build multilingual content — Urdu, English &amp; Arabic</li>
+          <li>Develop assessment frameworks and student evaluation rubrics</li>
+          <li>Produce teacher guides and facilitator handbooks</li>
+        </ul>
+      </div>
+      <div class="a-card">
+        <div class="a-card-t">🤖 AI Research Methodology</div>
+        <p style="margin-bottom:12px;">Each course is developed through a rigorous AI-assisted pipeline ensuring accuracy, depth and accessibility:</p>
+        <ul>
+          <li>Multi-source synthesis from primary classical texts</li>
+          <li>Cross-referencing peer-reviewed pedagogical literature</li>
+          <li>Adaptive scaffolding for different learner levels</li>
+          <li>Iterative refinement based on learning science principles</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="a-card" style="margin-bottom:18px;">
+        <div class="a-card-t">🎓 Specializations</div>
+        <div class="tags">
+          <span class="tag">Quranic Tafseer</span><span class="tag">Seerah</span><span class="tag">Fiqh</span><span class="tag">Tajweed</span><span class="tag">Hadith</span><span class="tag">Aqeedah</span><span class="tag">Arabic Language</span><span class="tag">STEM</span><span class="tag">Computer Science</span><span class="tag">Mathematics</span><span class="tag">English Language</span><span class="tag">Psychology</span><span class="tag">Islamic History</span><span class="tag">AI Literacy</span><span class="tag">Bloom's Taxonomy</span><span class="tag">Instructional Design</span>
+        </div>
+      </div>
+      <div class="a-card">
+        <div class="a-card-t">📬 Get In Touch</div>
+        <p style="margin-bottom:14px;">Available for curriculum design projects, consultations and educational partnerships.</p>
+        <a href="mailto:nida.kashif.ali.Siddiqui@gmail.com" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:10px;">
+          <span style="font-size:1.1rem;">✉️</span>
+          <span style="font-size:.85rem;color:var(--gold-l);">nida.kashif.ali.Siddiqui@gmail.com</span>
+        </a>
+        <a href="https://wa.me/923012686478" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+          <span style="font-size:1.1rem;">💬</span>
+          <span style="font-size:.85rem;color:var(--wa);">+92 301 2686478 (WhatsApp)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     COURSES
+════════════════════════════════════════════════ -->
+<section class="page-sec" id="courses">
+<div class="inner">
+  <div class="sec-label reveal">02 — Portfolio</div>
+  <h2 class="sec-t reveal">Course <em>Samples</em></h2>
+  <p class="sec-d reveal">A curated collection of designed curricula spanning Islamic sciences and modern academics. Click any course to explore its full module structure.</p>
+
+  <div class="filter-bar reveal">
+    <button class="flt on" onclick="filterC('all',this)">All</button>
+    <button class="flt" onclick="filterC('cq',this)">Quranic</button>
+    <button class="flt" onclick="filterC('ci',this)">Islamic</button>
+    <button class="flt" onclick="filterC('cs',this)">Science</button>
+    <button class="flt" onclick="filterC('ct',this)">Technology</button>
+    <button class="flt" onclick="filterC('cl',this)">Language</button>
+    <button class="flt" onclick="filterC('cm',this)">Mathematics</button>
+    <button class="flt" onclick="filterC('csoc',this)">Social</button>
+  </div>
+
+  <div class="c-grid" id="cGrid">
+
+    <div class="c-card cq" onclick="openM('tafseer')">
+      <div class="c-banner">📖</div>
+      <div class="c-body">
+        <div class="c-cat">Quranic Sciences</div>
+        <div class="c-title">Complete Tafseer Course</div>
+        <div class="c-urdu">تفسیرِ قرآن — مکمل کورس</div>
+        <div class="c-desc">Comprehensive Quranic exegesis integrating Tafseer Tabari, Ibn Katheer &amp; Bayan ul Quran. Urdu translation, word meanings &amp; Asbab-e-Nuzool for all 30 Parahs.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu</span><span class="cpill">30 Parahs</span><span class="cpill">Advanced</span></div><div class="c-sess">~200+ sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card ci" onclick="openM('seerah')">
+      <div class="c-banner">🕌</div>
+      <div class="c-body">
+        <div class="c-cat">Islamic History</div>
+        <div class="c-title">Seerah — Al-Raheeq Al-Makhtum</div>
+        <div class="c-urdu">سیرت النبی ﷺ — الرحیق المختوم</div>
+        <div class="c-desc">Week-by-week prophetic biography based on the world prize-winning book. 4-month structured program with deep reflection and practical application.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu</span><span class="cpill">4 Months</span><span class="cpill">All Levels</span></div><div class="c-sess">16 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card ci" onclick="openM('fiqh')">
+      <div class="c-banner">⚖️</div>
+      <div class="c-body">
+        <div class="c-cat">Islamic Jurisprudence</div>
+        <div class="c-title">Practical Fiqh Course</div>
+        <div class="c-urdu">عملی فقہ کورس</div>
+        <div class="c-desc">Hanafi jurisprudence for everyday Muslim life — Taharah, Salah, Zakah, Sawm, Hajj, Muamalaat and contemporary issues with daleel.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu</span><span class="cpill">6 Months</span><span class="cpill">Intermediate</span></div><div class="c-sess">24 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card cq" onclick="openM('tajweed')">
+      <div class="c-banner">🎵</div>
+      <div class="c-body">
+        <div class="c-cat">Quranic Recitation</div>
+        <div class="c-title">Tajweed Mastery Program</div>
+        <div class="c-urdu">تجوید القرآن — مہارت کورس</div>
+        <div class="c-desc">Progressive skill-building from Makharij to advanced recitation rules. Noon Saakin, Meem Saakin, Madd, Waqf and practical Tilawah exercises.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu/Arabic</span><span class="cpill">3 Months</span><span class="cpill">Beginner→Pro</span></div><div class="c-sess">12 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card ci" onclick="openM('hadith')">
+      <div class="c-banner">📜</div>
+      <div class="c-body">
+        <div class="c-cat">Hadith Sciences</div>
+        <div class="c-title">40 Nawawi — Hadith Studies</div>
+        <div class="c-urdu">اربعین نووی — حدیث کورس</div>
+        <div class="c-desc">In-depth study of Imam Nawawi's 40 ahadith with Arabic text, Urdu translation, Sharh and life application for modern Muslims.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu/Arabic</span><span class="cpill">10 Weeks</span><span class="cpill">All Levels</span></div><div class="c-sess">10 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card ci" onclick="openM('aqeedah')">
+      <div class="c-banner">🌙</div>
+      <div class="c-body">
+        <div class="c-cat">Islamic Theology</div>
+        <div class="c-title">Aqeedah Fundamentals</div>
+        <div class="c-urdu">عقیدے کا بنیادی کورس</div>
+        <div class="c-desc">Core Islamic beliefs from classical texts — Tawheed, Prophethood, Angels, Divine Books, Qadar and Day of Judgment with contemporary applications.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu</span><span class="cpill">8 Weeks</span><span class="cpill">Beginner</span></div><div class="c-sess">8 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card cs" onclick="openM('science')">
+      <div class="c-banner">🔬</div>
+      <div class="c-body">
+        <div class="c-cat">Natural Sciences</div>
+        <div class="c-title">Integrated Science — Grade 8</div>
+        <div class="c-urdu">سائنس — گریڈ ۸</div>
+        <div class="c-desc">Physics, Chemistry &amp; Biology integrated curriculum aligned with Punjab Board. Inquiry-based learning with Islamic perspective on creation and exam prep.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English</span><span class="cpill">1 Year</span><span class="cpill">Grade 8</span></div><div class="c-sess">40 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card ct" onclick="openM('computer')">
+      <div class="c-banner">💻</div>
+      <div class="c-body">
+        <div class="c-cat">Technology</div>
+        <div class="c-title">Computer Science Fundamentals</div>
+        <div class="c-urdu">کمپیوٹر سائنس — بنیادی کورس</div>
+        <div class="c-desc">Binary to Python programming — digital literacy, MS Office, HTML basics, internet safety, AI concepts and digital ethics for secondary students.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English</span><span class="cpill">6 Months</span><span class="cpill">Grade 9-10</span></div><div class="c-sess">24 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card cm" onclick="openM('math')">
+      <div class="c-banner">📐</div>
+      <div class="c-body">
+        <div class="c-cat">Mathematics</div>
+        <div class="c-title">Mathematics Mastery — Grade 10</div>
+        <div class="c-urdu">ریاضی — گریڈ ۱۰</div>
+        <div class="c-desc">Complete secondary mathematics — Algebra, Geometry, Trigonometry, Statistics and financial math with concept-first visual proofs and real-world problems.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English</span><span class="cpill">1 Year</span><span class="cpill">Grade 10</span></div><div class="c-sess">36 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card cl" onclick="openM('english')">
+      <div class="c-banner">✍️</div>
+      <div class="c-body">
+        <div class="c-cat">Language Arts</div>
+        <div class="c-title">English Communication Skills</div>
+        <div class="c-urdu">انگریزی مواصلاتی مہارت</div>
+        <div class="c-desc">Speaking, writing, grammar and reading for intermediate learners — essay writing, email etiquette, presentation skills and IELTS preparation components.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English</span><span class="cpill">4 Months</span><span class="cpill">Intermediate</span></div><div class="c-sess">16 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card csoc" onclick="openM('psychology')">
+      <div class="c-banner">🧠</div>
+      <div class="c-body">
+        <div class="c-cat">Social Sciences</div>
+        <div class="c-title">Introduction to Psychology</div>
+        <div class="c-urdu">نفسیات کا تعارف</div>
+        <div class="c-desc">Foundational psychology with Islamic perspective — nafs framework, cognition, emotion, mental health, synthesizing Western science with Quran &amp; Sunnah.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English/Urdu</span><span class="cpill">3 Months</span><span class="cpill">All Levels</span></div><div class="c-sess">12 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card cl" onclick="openM('arabic')">
+      <div class="c-banner">🌿</div>
+      <div class="c-body">
+        <div class="c-cat">Language — Arabic</div>
+        <div class="c-title">Quranic Arabic — Zero to Hero</div>
+        <div class="c-urdu">عربی قرآن — صفر سے مہارت تک</div>
+        <div class="c-desc">Grammar and vocabulary taught entirely through Quranic examples — from alphabet to reading comprehension of full Surahs independently.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu medium</span><span class="cpill">6 Months</span><span class="cpill">Beginner</span></div><div class="c-sess">24 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card csoc" onclick="openM('history')">
+      <div class="c-banner">🏛️</div>
+      <div class="c-body">
+        <div class="c-cat">Social Sciences</div>
+        <div class="c-title">Islamic Civilization — World History</div>
+        <div class="c-urdu">اسلامی تہذیب اور عالمی تاریخ</div>
+        <div class="c-desc">Rise of Islamic civilization, Golden Age contributions, Crusades, Mughal Empire, colonialism and modern Muslim world — 5 months structured study.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English/Urdu</span><span class="cpill">5 Months</span><span class="cpill">Secondary</span></div><div class="c-sess">20 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card ct" onclick="openM('ai')">
+      <div class="c-banner">🤖</div>
+      <div class="c-body">
+        <div class="c-cat">Emerging Technology</div>
+        <div class="c-title">AI Literacy for Everyone</div>
+        <div class="c-urdu">مصنوعی ذہانت — سب کے لیے</div>
+        <div class="c-desc">What AI is, how it works, prompt engineering, ethical use, AI tools for study and productivity — with Islamic perspective on technology for all ages.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English/Urdu</span><span class="cpill">6 Weeks</span><span class="cpill">All Ages</span></div><div class="c-sess">6 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card csoc" onclick="openM('parenting')">
+      <div class="c-banner">👨‍👩‍👧</div>
+      <div class="c-body">
+        <div class="c-cat">Life Skills</div>
+        <div class="c-title">Islamic Parenting in the Digital Age</div>
+        <div class="c-urdu">ڈیجیٹل دور میں اسلامی تربیت</div>
+        <div class="c-desc">Evidence-based Islamic parenting curriculum — child psychology, screen time, moral development and practical routines for raising confident Muslim children.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">Urdu</span><span class="cpill">8 Weeks</span><span class="cpill">Parents</span></div><div class="c-sess">8 sessions</div></div>
+      </div>
+    </div>
+
+    <div class="c-card cs" onclick="openM('biology')">
+      <div class="c-banner">🧬</div>
+      <div class="c-body">
+        <div class="c-cat">Life Sciences</div>
+        <div class="c-title">Human Biology &amp; Health</div>
+        <div class="c-urdu">انسانی حیاتیات اور صحت</div>
+        <div class="c-desc">Comprehensive human biology connecting Quranic insights — anatomy, physiology, nutrition, genetics and Islamic medical ethics for Grade 9–11.</div>
+        <div class="c-foot"><div class="c-pills"><span class="cpill">English</span><span class="cpill">4 Months</span><span class="cpill">Grade 9-11</span></div><div class="c-sess">16 sessions</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     PROCESS
+════════════════════════════════════════════════ -->
+<section class="page-sec about-bg" id="process">
+<div class="inner">
+  <div class="sec-label reveal">03 — Methodology</div>
+  <h2 class="sec-t reveal">How I Design <em>Curricula</em></h2>
+  <p class="sec-d reveal">A 4-step AI-assisted research process that produces pedagogically sound, culturally relevant and deeply researched educational content.</p>
+  <div class="process-row reveal">
+    <div class="p-step" data-n="01"><div class="p-icon">🔍</div><div class="p-title">Research &amp; Synthesis</div><div class="p-desc">Deep dive into primary sources — classical texts, peer-reviewed literature and authentic hadith collections.</div></div>
+    <div class="p-step" data-n="02"><div class="p-icon">🏗️</div><div class="p-title">Structure &amp; Scaffold</div><div class="p-desc">Apply Bloom's Taxonomy, backward design and Islamic pedagogical frameworks to build progressive learning journeys.</div></div>
+    <div class="p-step" data-n="03"><div class="p-icon">✍️</div><div class="p-title">Content Creation</div><div class="p-desc">Write detailed session plans, objectives, activities and assessments in Urdu, English or bilingual formats.</div></div>
+    <div class="p-step" data-n="04"><div class="p-icon">🔄</div><div class="p-title">Review &amp; Refine</div><div class="p-desc">Iterative quality review for accuracy, clarity, age-appropriateness and alignment with learning outcomes.</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════════ -->
+<section class="page-sec" id="testimonials">
+<div class="inner">
+  <div class="sec-label reveal">04 — Reviews</div>
+  <h2 class="sec-t reveal">What Educators <em>Are Saying</em></h2>
+  <p class="sec-d reveal">Feedback from teachers, students and Islamic institutes who have used these curricula.</p>
+  <div class="testi-grid reveal">
+    <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">The Tafseer course is unlike anything I've seen. It brings three major tafaaseer together in a way that is accessible to the average person. Our weekend halaqa has completely transformed.</p><div class="t-name">Ustadha Rabia M.</div><div class="t-role">Islamic Studies Teacher, Lahore</div></div>
+    <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">The Seerah curriculum is brilliantly structured. Each session has clear objectives, deep reflection questions and the Urdu presentation is eloquent yet simple. Highly recommended.</p><div class="t-name">Maulana Tariq A.</div><div class="t-role">Head of Curriculum, Islamic Academy Karachi</div></div>
+    <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">My teenager finished the AI Literacy course asking intelligent questions about ethics and halal technology use. That's real learning happening at its best!</p><div class="t-name">Sr. Huma K.</div><div class="t-role">Parent, Islamabad</div></div>
+    <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">The Computer Science curriculum is thorough, practical and culturally sensitive. It covers everything from digital citizenship to Python without feeling overwhelming for our students.</p><div class="t-name">Mr. Bilal F.</div><div class="t-role">School Principal, Cambridge System School Rawalpindi</div></div>
+    <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">Psychology with an Islamic lens — the nafs framework alongside Maslow's hierarchy was eye-opening. Beautifully designed and deeply thoughtful.</p><div class="t-name">Dr. Noor-ul-Huda</div><div class="t-role">Counsellor &amp; Educator, Rawalpindi</div></div>
+    <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text" style="font-family:'Noto Nastaliq Urdu',serif;direction:rtl;font-size:.92rem;">کورس کی ترتیب اور زبان دونوں قابلِ تعریف ہیں۔ طالبِ علموں کو مشکل مضامین آسانی سے سمجھ آتے ہیں۔ اللہ نداء صاحبہ کو جزائے خیر دے۔</p><div class="t-name" style="font-family:'Noto Nastaliq Urdu',serif;direction:rtl;">قاری محمد اسلم</div><div class="t-role">مدرسہ استاد، فیصل آباد</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════════════ -->
+<section class="page-sec about-bg" id="contact">
+<div class="inner">
+  <div class="sec-label reveal">05 — Contact</div>
+  <div class="contact-inner reveal">
+
+    <!-- LEFT INFO -->
+    <div class="contact-info">
+      <h2>Let's Build<br/><em>Something</em><br/>Remarkable</h2>
+      <p>Whether you need a complete curriculum package, a single course design, or consultation on your educational program — I'm here to help build it right.</p>
+      <div class="c-links">
+
+        <a href="mailto:nida.kashif.ali.Siddiqui@gmail.com" class="c-link">
+          <div class="c-link-ic">✉️</div>
+          <div>
+            <span class="c-link-lbl">Email (Direct)</span>
+            <span class="c-link-txt">nida.kashif.ali.Siddiqui@gmail.com</span>
+          </div>
+        </a>
+
+        <a href="https://wa.me/923012686478?text=Hello%20Nida!%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20curriculum%20project." target="_blank" rel="noopener" class="c-link wa-contact">
+          <div class="c-link-ic">💬</div>
+          <div>
+            <span class="c-link-lbl">WhatsApp (Click to Chat)</span>
+            <span class="c-link-txt">+92 301 2686478</span>
+          </div>
+        </a>
+
+        <a href="tel:+923032686478" class="c-link">
+          <div class="c-link-ic">📱</div>
+          <div>
+            <span class="c-link-lbl">Phone</span>
+            <span class="c-link-txt">+92 303 2686478</span>
+          </div>
+        </a>
+
+        <div class="c-link" style="cursor:default;">
+          <div class="c-link-ic">📍</div>
+          <div>
+            <span class="c-link-lbl">Location</span>
+            <span class="c-link-txt">Rawalpindi, Pakistan — Remote worldwide</span>
+          </div>
+        </div>
+
+        <div class="c-link" style="cursor:default;">
+          <div class="c-link-ic">⏰</div>
+          <div>
+            <span class="c-link-lbl">Response Time</span>
+            <span class="c-link-txt">Within 24 hours (usually same day)</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="contact-form-wrap">
+      <div id="formBox">
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);margin-bottom:6px;">Send a Message</div>
+          <div style="font-size:.8rem;color:var(--muted);">Your message will be delivered directly to Nida's inbox.</div>
+        </div>
+
+        <!-- ✅ FORMSPREE — real email delivery -->
+        <form id="contactForm" action="https://formspree.io/f/xdknjqrz" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="New Portfolio Inquiry — Nida Kashif"/>
+          <input type="hidden" name="_replyto" id="replyTo"/>
+          <input type="text" name="_gotcha" style="display:none"/>
+
+          <div class="form-row-2">
+            <div>
+              <label class="f-label">First Name <span class="f-required">*</span></label>
+              <input class="f-input" name="first_name" placeholder="Ayesha" required/>
+            </div>
+            <div>
+              <label class="f-label">Last Name <span class="f-required">*</span></label>
+              <input class="f-input" name="last_name" placeholder="Khan" required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="f-label">Email Address <span class="f-required">*</span></label>
+            <input class="f-input" type="email" name="email" id="emailInput" placeholder="you@example.com" required oninput="document.getElementById('replyTo').value=this.value"/>
+          </div>
+
+          <div class="form-row">
+            <label class="f-label">WhatsApp / Phone</label>
+            <input class="f-input" name="phone" placeholder="+92 3XX XXXXXXX"/>
+          </div>
+
+          <div class="form-row">
+            <label class="f-label">I Need <span class="f-required">*</span></label>
+            <select class="f-select" name="service" required>
+              <option value="" disabled selected>Select a service…</option>
+              <option>Complete Course Design (Islamic)</option>
+              <option>Complete Course Design (Academic)</option>
+              <option>Curriculum Consultation</option>
+              <option>Teacher Training Material</option>
+              <option>Student Worksheets &amp; Handouts</option>
+              <option>Urdu Content Writing</option>
+              <option>English Content Writing</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label class="f-label">Subject / Course Title <span class="f-required">*</span></label>
+            <input class="f-input" name="subject_detail" placeholder="e.g. Fiqh curriculum for Grade 6 girls" required/>
+          </div>
+
+          <div class="form-row">
+            <label class="f-label">Your Message <span class="f-required">*</span></label>
+            <textarea class="f-textarea" name="message" placeholder="Tell me about your project — audience, goals, timeline and budget…" required></textarea>
+          </div>
+
+          <div class="form-notice">
+            📌 Your message goes directly to <strong style="color:var(--gold);">nida.kashif.ali.Siddiqui@gmail.com</strong>. You can also reach via <a href="https://wa.me/923012686478" target="_blank">WhatsApp</a> for a faster reply.
+          </div>
+
+          <button class="btn-submit" type="submit" id="submitBtn">
+            <span id="btnText">Send Message</span>
+            <span id="btnIcon">→</span>
+          </button>
+          <div class="form-error" id="formError">❌ Something went wrong. Please email directly: nida.kashif.ali.Siddiqui@gmail.com</div>
+        </form>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✅</div>
+        <h3>Message Sent!</h3>
+        <p>Thank you for reaching out. Nida will reply within 24 hours to <strong id="confirmedEmail" style="color:var(--gold);"></strong></p>
+        <br/>
+        <p style="font-size:.8rem;">Need urgent help? Chat on <a href="https://wa.me/923012686478" target="_blank" style="color:var(--wa);">WhatsApp</a> right now.</p>
+        <button onclick="resetForm()" style="margin-top:16px;background:transparent;border:1px solid var(--border2);color:var(--cream);padding:10px 22px;border-radius:6px;cursor:pointer;font-size:.82rem;">Send Another Message</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer>
+  <div class="f-brand">Nida Kashif Ali Siddiqui</div>
+  <div class="f-links">
+    <a href="mailto:nida.kashif.ali.Siddiqui@gmail.com">✉️ Email</a>
+    <a href="https://wa.me/923012686478" target="_blank">💬 WhatsApp</a>
+    <a href="#courses">Portfolio</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="f-copy">© 2025 Nida Kashif Ali Siddiqui · AI Curriculum Designer · Rawalpindi, Pakistan</div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL OVERLAY
+════════════════════════════════════════════════ -->
+<div class="overlay" id="overlay" onclick="closeM(event)">
+  <div class="modal" id="modal">
+    <div class="m-hdr">
+      <div>
+        <div id="mCat" style="font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;"></div>
+        <div id="mTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:#fff;line-height:1.2;"></div>
+        <div id="mUrdu" style="font-family:'Noto Nastaliq Urdu',serif;direction:rtl;font-size:.9rem;color:var(--gold-l);opacity:.7;margin-top:4px;line-height:1.7;"></div>
+      </div>
+      <button class="m-close" onclick="closeOverlay()">✕</button>
+    </div>
+    <div class="m-body" id="mBody"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     JS
+════════════════════════════════════════════════ -->
+<script>
+/* ── COURSE DATA ── */
+const D={
+  tafseer:{cat:"Quranic Sciences",title:"Complete Tafseer Course",urdu:"تفسیرِ قرآن — مکمل کورس",ov:"A landmark curriculum drawing from Tafseer Tabari, Tafseer Ibn Katheer and Bayan ul Quran. Each session covers Urdu translation, word-by-word meanings, Asbab-e-Nuzool and contemporary application — covering all 30 Parahs systematically.",mods:[{n:"Foundation",t:"Introduction to Tafseer Sciences",i:["Three major tafaaseer — authors, methodology and scope","Tafseer bil-ma'thur vs tafseer bil-ra'y","Rules and principles of Asbab-e-Nuzool","How to use classical Arabic dictionaries"]},{n:"Months 1–6",t:"Para 1–10: Madinan Foundation",i:["Surah Al-Fatiha — complete analysis (7 sessions)","Al-Baqarah — Ahkam, stories, Ayat al-Kursi","Aal Imran — Maryam, Isa, Battle of Uhud","An-Nisa, Al-Maidah — Women's rights, Fiqh rulings"]},{n:"Months 7–18",t:"Para 11–20: Prophetic Period",i:["Al-Anam, Al-Araf — Tawheed arguments, Prophets","Al-Anfal, At-Tawbah — Jihad, Munafiqeen","Yunus, Hud, Yusuf — Prophetic stories in depth","Al-Isra, Al-Kahf — Night Journey, Four Trials"]},{n:"Months 19–30",t:"Para 21–30: Makkah Surahs",i:["Al-Anbiya to Al-Ahzab — Universal message","Al-Saffat, Yasin — Heart of the Quran","Al-Hujurat — Islamic social code (detailed)","Para 30 — All 37 short Surahs with Asbab-e-Nuzool"]}]},
+  seerah:{cat:"Islamic History",title:"Seerah — Al-Raheeq Al-Makhtum",urdu:"سیرت النبی ﷺ — الرحیق المختوم",ov:"A 16-session, 4-month journey through the life of the Prophet ﷺ based on the world prize-winning biography. Each session combines verified historical facts with deep personal reflection and practical life application.",mods:[{n:"Month 1",t:"Arabia Before Islam & Early Life",i:["Arab world — geography, politics, religion","Lineage of the Prophet ﷺ from Adam ؑ","Birth, infancy, Halimah Sa'diyah and Shaqq al-Sadr","Youth, Al-Amin reputation and marriage to Khadijah ؓ"]},{n:"Month 2",t:"Revelation & Makkah Period",i:["Cave of Hira — First Revelation (detailed)","Early Da'wah — secret and open","Persecution: Bilal ؓ, Sumayyah ؓ, Ammar ؓ","Hijra to Abyssinia, Year of Sorrow"]},{n:"Month 3",t:"Hijra & Building the Islamic State",i:["Ta'if rejection, Isra & Mi'raj — detailed","The Hijra to Madinah — strategy and miracles","Masjid al-Nabawi, Brotherhood (Muakhah)","Battle of Badr and lessons from Uhud"]},{n:"Month 4",t:"Triumph & Eternal Legacy",i:["Battle of Ahzab & Treaty of Hudaybiyyah","Conquest of Makkah — General Amnesty","Farewell Hajj — universal message to humanity","Final days, passing and eternal legacy"]}]},
+  fiqh:{cat:"Islamic Jurisprudence",title:"Practical Fiqh Course",urdu:"عملی فقہ کورس",ov:"A structured 24-session Hanafi Fiqh program equipping Muslims with Islamic rulings for daily life — from ritual worship to modern business dealings — always with daleel.",mods:[{n:"Unit 1 (S1–6)",t:"Taharah — Purity",i:["Types of water: Tahir, Mutanajjis, Musta'mal","Wudhu — Fardh, Sunnah, Nawaqidh","Ghusl — Mujibaat, method, contemporary issues","Tayammum, Haydh, Nifas — modern Q&A"]},{n:"Unit 2 (S7–12)",t:"Salah — Prayer",i:["Conditions, pillars and Sunnah of Salah","Jama'ah, Imamat and Masbooq rulings","Jumu'ah, Eid, Janazah, Witr prayers","Qadha prayers, Musafir's Salah, hospital Salah"]},{n:"Unit 3 (S13–18)",t:"Zakah, Sawm & Hajj",i:["Nisaab calculation — gold, silver, cash, shares","Sawm — Mufsidat, Kaffarah, modern issues (injections)","Hajj — types, pillars, Wajibat, Mawaqit","Qurbani, Fidyah, Sadaqat al-Fitr rulings"]},{n:"Unit 4 (S19–24)",t:"Muamalaat & Contemporary Issues",i:["Nikah — conditions, Mahr, Wali","Talaq types, Khul', Iddah — WhatsApp talaq?","Halal business — conditions, Riba, Gharar","Crypto, Insurance, Banking, Freelancing in Islam"]}]},
+  tajweed:{cat:"Quranic Recitation",title:"Tajweed Mastery Program",urdu:"تجوید القرآن — مہارت کورس",ov:"A progressive 12-session program taking learners from complete beginners to confident Quranic reciters using the rules of Tajweed with Urdu explanations, audio exercises and practical assessment.",mods:[{n:"Level 1 (S1–3)",t:"Makharij — Points of Articulation",i:["5 major articulation areas detailed","Individual letter sounds with drill exercises","Sifaat — characteristics of letters","Thick vs thin letters (Tafkheem/Tarqeeq)"]},{n:"Level 2 (S4–6)",t:"Noon Sakin & Tanween Rules",i:["Izhaar — 6 throat letters, clear pronunciation","Idghaam — with/without Ghunna (4+2 letters)","Iqlaab — conversion to Meem Saakin","Ikhfa — 15 letters, hidden pronunciation"]},{n:"Level 3 (S7–9)",t:"Meem Sakin & Madd Rules",i:["Idghaam Shafawi, Ikhfa Shafawi, Izhaar Shafawi","Madd Asli (2 counts) — the natural extension","Madd Wajib Muttasil vs Madd Jaiz Munfasil","Madd Laazim — 4/6 counts in specific cases"]},{n:"Level 4 (S10–12)",t:"Advanced Rules & Waqf",i:["Laam Shamsiyya and Qamariyya","Hamzat ul-Wasl — when to pronounce/drop","Waqf rules — compulsory, preferred, poor stops","Full Surah recitation assessment with feedback"]}]},
+  hadith:{cat:"Hadith Sciences",title:"40 Nawawi — Hadith Studies",urdu:"اربعین نووی — حدیث کورس",ov:"An in-depth 10-week exploration of Imam Nawawi's 40 most foundational ahadith with full Arabic text, sanad analysis, Urdu Sharh and daily life application for modern Muslims.",mods:[{n:"Week 1–3",t:"Niyyah, Islam & Core Actions",i:["Hadith 1 — Actions by intentions (complete analysis)","Hadith 2 — Islam, Iman, Ihsan (Jibril's Hadith)","Hadith 6 — Halal and Haram are clear","Sanad terminology and authentication"]},{n:"Week 4–6",t:"Character & Brotherhood",i:["Hadith 13 — Love for your brother what you love","Hadith 15 — Honour your neighbour (Islamic ethics)","Hadith 25 — Sadaqah removes sins","Hadith 35 — Envy forbidden, brotherhood required"]},{n:"Week 7–10",t:"Completion & Life Application",i:["Hadith 29 — Fear Allah wherever you are","Hadith 34 — Forbidding evil with hand/tongue/heart","Hadith 40 — Be a stranger in this world","Life application project and final presentation"]}]},
+  aqeedah:{cat:"Islamic Theology",title:"Aqeedah Fundamentals",urdu:"عقیدے کا بنیادی کورس",ov:"8 comprehensive sessions on the core beliefs of Islam from classical texts — with special focus on answering contemporary doubts and philosophical challenges to Islamic theology.",mods:[{n:"Unit 1",t:"Tawheed — The Oneness of Allah",i:["Three categories: Rububiyyah, Uluhiyyah, Asma wa Sifaat","Shirk — major (Akbar) and minor (Asghar) forms","99 Names of Allah — meanings and impact on life","Rational and scriptural proofs of God's existence"]},{n:"Unit 2",t:"Prophethood & Divine Books",i:["Belief in all Prophets — qualities and number","Khatam al-Nabiyyeen — finality of Prophethood","Four Divine Books — preservation and differences","Quran's miraculous preservation — scientific proof"]},{n:"Unit 3",t:"Angels, Qadar & Akhirah",i:["Angels — types, roles, how many we know","Al-Qadar — four levels (Ilm, Kitabah, Iradah, Khalq)","Signs of Qiyamah — Sughra and Kubra","Barzakh, Hashr, Sirat, Jannah, Jahannam"]}]},
+  science:{cat:"Natural Sciences",title:"Integrated Science — Grade 8",urdu:"سائنس — گریڈ ۸",ov:"A full-year integrated science curriculum for Grade 8 aligned with Punjab Board syllabus. Inquiry-based learning, lab activities, Islamic perspective on natural phenomena and comprehensive exam preparation.",mods:[{n:"Term 1",t:"Matter & Forces (Physics)",i:["States of matter — particles, changes of state","Forces: gravity, friction, pressure in fluids","Work, power and energy — conservation law","Simple machines — lever, pulley, inclined plane"]},{n:"Term 2",t:"Chemical Science",i:["Atoms, elements, compounds and mixtures","Chemical reactions — word and symbol equations","Acids, bases and salts — pH scale and uses","Metals vs non-metals — reactions and uses"]},{n:"Term 3",t:"Living Systems (Biology)",i:["Cell structure — animal vs plant, organelles","Human organ systems — digestive, respiratory","Photosynthesis and cellular respiration","Ecosystems, food chains and conservation"]},{n:"Quran–Science",t:"Islamic Perspective Integration",i:["Water cycle in Quran (Surah Az-Zumar 39:21)","Human embryology — Surah Al-Muminoon 23:12-14","Iron sent from space (Surah Al-Hadid 57:25)","Environment stewardship as Khalifah"]}]},
+  computer:{cat:"Technology",title:"Computer Science Fundamentals",urdu:"کمپیوٹر سائنس — بنیادی کورس",ov:"A 24-session computer science curriculum for secondary students covering hardware, operating systems, Python programming, web basics, internet safety, AI concepts and digital ethics with practical projects.",mods:[{n:"Module 1 (S1–6)",t:"Digital Foundations",i:["Hardware components and Von Neumann Model","Number systems — Binary, Decimal, Hexadecimal","Operating systems — Windows navigation mastery","MS Office suite — Word, Excel, PowerPoint projects"]},{n:"Module 2 (S7–14)",t:"Python Programming",i:["Variables, data types, input/output","Conditionals — if/elif/else with projects","Loops — for/while, break/continue","Lists, tuples, dictionaries, functions"]},{n:"Module 3 (S15–19)",t:"Internet, Web & Security",i:["How the internet works — IP, DNS, HTTP/HTTPS","HTML5 and CSS3 — build a personal webpage","Cybersecurity — phishing, passwords, 2FA","Islamic digital ethics — online responsibility"]},{n:"Module 4 (S20–24)",t:"AI & Ethics",i:["What is AI — history, types, Machine Learning","Hands-on: Google Teachable Machine","Prompt engineering for ChatGPT/Claude","AI bias, privacy, Islamic perspective on tech"]}]},
+  math:{cat:"Mathematics",title:"Mathematics Mastery — Grade 10",urdu:"ریاضی — گریڈ ۱۰",ov:"A comprehensive Grade 10 mathematics curriculum following Punjab Board and Cambridge O-level standards. Concept-first pedagogy with visual proofs, real-world word problems and strategic exam preparation.",mods:[{n:"Unit 1",t:"Algebra & Equations",i:["Sets, functions and relations","Quadratic equations — factoring, quadratic formula","Simultaneous equations — substitution/elimination","Polynomials, algebraic fractions and partial fractions"]},{n:"Unit 2",t:"Geometry & Coordinate",i:["Lines, angles, triangle congruency and similarity","Circle theorems and formal proofs","Coordinate geometry — gradient, midpoint, distance","Transformations — translation, reflection, rotation"]},{n:"Unit 3",t:"Trigonometry",i:["Sin, Cos, Tan ratios — SOHCAHTOA","Pythagoras theorem — extended applications","Angles of elevation and depression","Sine rule, cosine rule, area of triangle"]},{n:"Unit 4",t:"Statistics & Financial Math",i:["Mean, median, mode, range — grouped data","Probability — theoretical and experimental","Simple and compound interest calculations","Zakat calculation as real-world application"]}]},
+  english:{cat:"Language Arts",title:"English Communication Skills",urdu:"انگریزی مواصلاتی مہارت",ov:"A 16-session intermediate English program focused on real-world communication. Students develop writing, speaking, reading and grammar skills for academic, professional and daily life use.",mods:[{n:"Module 1",t:"Grammar & Structure",i:["All tense forms — simple, perfect, continuous","Modal verbs — can, could, should, must, might","Passive voice — formation and appropriate use","Reported speech and complex sentence structures"]},{n:"Module 2",t:"Writing Skills",i:["Paragraph structure — topic, support, conclusion","Essay types — argumentative, descriptive, narrative","Formal email and letter writing","Summarizing, paraphrasing and note-taking"]},{n:"Module 3",t:"Speaking & Presentation",i:["Conversational English — everyday situations","Public speaking — structure, delivery, confidence","Discussion, debate and negotiation skills","Interview skills and professional communication"]},{n:"Module 4",t:"Reading & IELTS Prep",i:["Reading comprehension strategies — skimming/scanning","Vocabulary building — context and word families","IELTS task types — Task 1 charts, Task 2 essays","Mock test under timed conditions"]}]},
+  psychology:{cat:"Social Sciences",title:"Introduction to Psychology",urdu:"نفسیات کا تعارف",ov:"A unique curriculum introducing Western psychology alongside the Islamic understanding of the nafs. Students explore cognition, personality, mental health and relationships through both scientific and Islamic lenses.",mods:[{n:"Unit 1",t:"Foundations of Psychology",i:["History of psychology — from philosophy to neuroscience","The Nafs in Islam — Ammara, Lawwamma, Mutmainnah","Brain and behaviour — basic neuroscience","Research methods — observation, experiment, survey"]},{n:"Unit 2",t:"Cognition & Learning",i:["Memory — encoding, storage, retrieval, forgetting","Motivation — Maslow's hierarchy vs Islamic priorities","Learning theories — classical and operant conditioning","Problem solving, creativity and critical thinking"]},{n:"Unit 3",t:"Emotions & Relationships",i:["Emotions — theory, regulation and Islamic guidance","Personality theories — Big Five and Islamic character","Healthy relationships — communication boundaries","Social influence — peer pressure and da'wah psychology"]},{n:"Unit 4",t:"Mental Health & Wellbeing",i:["Anxiety and depression — symptoms and Islamic coping","Seeking professional help — Islamic perspective","Dhikr and mindfulness — research-backed connection","Positive psychology and the concept of Sa'adah"]}]},
+  arabic:{cat:"Language — Arabic",title:"Quranic Arabic — Zero to Hero",urdu:"عربی قرآن — صفر سے مہارت تک",ov:"Learn to understand the Quran in its original language. All grammar and vocabulary taught exclusively through Quranic examples — linguistically rigorous and spiritually enriching.",mods:[{n:"Level 1",t:"Alphabet to Basic Grammar",i:["Arabic script — letters, vowels, shaddah, tanween","Nouns — masculine, feminine, singular, plural, dual","Verb forms — past tense (Madi) patterns","Prepositions and conjunctions in Quranic context"]},{n:"Level 2",t:"Vocabulary & Word Families",i:["100 most frequent Quranic words (memorization)","Root-word system (Fi'l, Ism, Harf)","Adjectives — agreement with nouns","Reading Surah Al-Fatiha word by word"]},{n:"Level 3",t:"Sentence Structure",i:["Jumlah Ismiyyah (nominal sentences)","Jumlah Fi'liyyah (verbal sentences)","Verb patterns — Awzan (Bab 1–3)","Reading and translating Juz Amma surahs"]},{n:"Level 4",t:"Independent Comprehension",i:["Reading longer Quranic passages","Quranic rhetorical devices — Iltifat, Tawkid","Independent translation of new passages","Final assessment — translate unseen verses"]}]},
+  history:{cat:"Social Sciences",title:"Islamic Civilization — World History",urdu:"اسلامی تہذیب اور عالمی تاریخ",ov:"A 20-session survey of Islamic civilization from Arabia to the modern era, demonstrating how Islam shaped world history through science, philosophy, governance, arts and medicine.",mods:[{n:"Unit 1",t:"Rise of Islam (610–750 CE)",i:["Arabia before Islam — context and map study","The Rightly Guided Caliphs — governance model","Umayyad expansion — Spain to Sindh","Women in early Islamic society — scholars and leaders"]},{n:"Unit 2",t:"Golden Age (750–1258 CE)",i:["Baghdad — capital of the world under Abbasids","Muslim contributions: maths, astronomy, medicine","Translation movement — preserving Greek knowledge","Al-Kindi, Ibn Sina, Al-Biruni, Al-Ghazali — biographies"]},{n:"Unit 3",t:"Empires & Colonialism",i:["Ottoman, Safavid, Mughal Empires — comparison","Crusades — causes, events, lasting impact","European colonialism of Muslim lands","Resistance — Aligarh, Deobandi, Barelvi movements"]},{n:"Unit 4",t:"Modern Muslim World",i:["Pakistan — Iqbal's vision and Jinnah's leadership","Arab nationalism and oil politics","Contemporary challenges — identity and Islamophobia","Future of Islamic civilization — student debate"]}]},
+  ai:{cat:"Emerging Technology",title:"AI Literacy for Everyone",urdu:"مصنوعی ذہانت — سب کے لیے",ov:"A non-technical 6-session introduction to Artificial Intelligence for students, teachers and parents. Covers what AI is, how to use it responsibly and its Islamic ethical framework.",mods:[{n:"Session 1–2",t:"Understanding AI",i:["History — chess programs to ChatGPT","Machine Learning — how computers learn from data","Types: Narrow AI, General AI, AGI","Real applications: image recognition, voice, search"]},{n:"Session 3–4",t:"Using AI Effectively",i:["Prompt engineering — asking AI the right way","AI tools for studying, writing and productivity","AI image generation — creative and ethical use","Spotting and fact-checking AI misinformation"]},{n:"Session 5–6",t:"AI Ethics & Islamic View",i:["Bias in AI — whose values does it reflect?","Privacy, data rights and digital amanah","Is AI halal or haram? Scholarly perspectives","The future — human creativity and automation"]}]},
+  parenting:{cat:"Life Skills",title:"Islamic Parenting in the Digital Age",urdu:"ڈیجیٹل دور میں اسلامی تربیت",ov:"An 8-session program for Muslim parents navigating modern challenges. Combines Islamic tarbiyah principles with evidence-based child psychology for raising confident, grounded Muslim children.",mods:[{n:"Module 1",t:"Foundations of Islamic Tarbiyah",i:["Prophetic model of parenting — hands-on examples","Rights of children in Islam (Fiqh perspective)","Developmental stages — what to teach and when","Creating an Islamic home environment practically"]},{n:"Module 2",t:"Screen Time & Digital Wellbeing",i:["Research on children and screen time","Islamic boundaries for digital devices","Social media conversations with teenagers","Using technology for Quran, learning, creativity"]},{n:"Module 3",t:"Moral & Spiritual Development",i:["Teaching Salah, Quran and dhikr naturally","Age-appropriate aqeedah conversations","Character — honesty, courage, empathy, gratitude","Dealing with peer pressure Islamically"]},{n:"Module 4",t:"Practical Tools",i:["Daily Islamic family routines — morning/night","Empathetic communication with teenagers","Duas for parents and children (memorization)","When to seek professional help — Islamic framework"]}]},
+  biology:{cat:"Life Sciences",title:"Human Biology & Health",urdu:"انسانی حیاتیات اور صحت",ov:"A 16-session biology curriculum connecting Quranic insights to modern science — covering anatomy, physiology, nutrition, genetics and Islamic medical ethics for secondary students.",mods:[{n:"Unit 1",t:"Cells & Body Systems",i:["Cell structure — organelles and functions","Tissues, organs and organ systems overview","Skeletal system — bones, joints, fractures","Nervous system — brain, neurons, reflex arc"]},{n:"Unit 2",t:"Digestion, Respiration & Circulation",i:["Digestive system and Islamic dietary rules (Halal)","Respiratory system — breathing, gas exchange, smoking","Heart and circulatory system — blood pressure","Blood components, groups and transfusion ethics"]},{n:"Unit 3",t:"Reproduction & Genetics",i:["Reproductive systems — male and female anatomy","Embryology — Quran and modern science comparison","Menstrual cycle and Islamic rulings connection","DNA, genes, heredity and genetic diseases"]},{n:"Unit 4",t:"Health, Disease & Ethics",i:["Communicable vs non-communicable diseases","Vaccines — Islamic perspective on medicine","Mental health — physical brain and Islamic coping","Islamic medical ethics — transplants, end of life"]}]}
+};
+
+/* ── MODAL ── */
+function openM(id){
+  const d=D[id];if(!d)return;
+  document.getElementById('mCat').textContent=d.cat;
+  document.getElementById('mTitle').textContent=d.title;
+  document.getElementById('mUrdu').textContent=d.urdu;
+  let h=`<p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:24px;">${d.ov}</p>`;
+  h+=`<div style="font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">COURSE MODULES</div>`;
+  d.mods.forEach(m=>{
+    h+=`<div class="mod-blk"><div class="mod-n">${m.n}</div><div class="mod-t">${m.t}</div><ul class="mod-items">${m.i.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  });
+  h+=`<div style="margin-top:20px;padding:16px;background:rgba(201,168,76,.06);border-radius:8px;text-align:center;">
+    <div style="font-size:.75rem;color:var(--muted);margin-bottom:10px;">Interested in this curriculum?</div>
+    <a href="#contact" onclick="closeOverlay()" style="background:var(--gold);color:var(--bg);padding:10px 24px;border-radius:4px;font-size:.8rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;margin-right:8px;">Request Course</a>
+    <a href="https://wa.me/923012686478?text=I'm interested in the ${d.title} curriculum" target="_blank" style="background:var(--wa);color:#fff;padding:10px 18px;border-radius:4px;font-size:.8rem;font-weight:500;text-decoration:none;">💬 WhatsApp</a>
+  </div>`;
+  document.getElementById('mBody').innerHTML=h;
+  document.getElementById('overlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeOverlay(){document.getElementById('overlay').classList.remove('on');document.body.style.overflow='';}
+function closeM(e){if(e.target===document.getElementById('overlay'))closeOverlay();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay();});
+
+/* ── FILTER ── */
+function filterC(cat,btn){
+  document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.c-card').forEach(c=>{
+    if(cat==='all'||c.classList.contains(cat))c.classList.remove('hide');
+    else c.classList.add('hide');
+  });
+}
+
+/* ── NAV SCROLL ── */
+const nav=document.getElementById('mainNav');
+const bt=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+  bt.classList.toggle('show',window.scrollY>400);
+});
+
+/* ── MOBILE MENU ── */
+const ham=document.getElementById('hamBtn');
+const mob=document.getElementById('mobMenu');
+ham.addEventListener('click',()=>mob.classList.toggle('open'));
+function closeMob(){mob.classList.remove('open');}
+
+/* ── SCROLL REVEAL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── CONTACT FORM ── */
+const form=document.getElementById('contactForm');
+if(form){
+  form.addEventListener('submit',async(e)=>{
+    e.preventDefault();
+    const btn=document.getElementById('submitBtn');
+    const txt=document.getElementById('btnText');
+    const ico=document.getElementById('btnIcon');
+    const err=document.getElementById('formError');
+    const emailVal=document.getElementById('emailInput').value;
+    btn.disabled=true;
+    txt.textContent='Sending…';
+    ico.textContent='⏳';
+    err.style.display='none';
+    try{
+      const res=await fetch(form.action,{
+        method:'POST',
+        body:new FormData(form),
+        headers:{Accept:'application/json'}
+      });
+      if(res.ok){
+        document.getElementById('formBox').style.display='none';
+        document.getElementById('confirmedEmail').textContent=emailVal;
+        document.getElementById('formSuccess').classList.add('show');
+      } else {
+        throw new Error('server');
+      }
+    }catch{
+      err.style.display='block';
+      btn.disabled=false;
+      txt.textContent='Send Message';
+      ico.textContent='→';
+    }
+  });
+}
+function resetForm(){
+  document.getElementById('formSuccess').classList.remove('show');
+  document.getElementById('formBox').style.display='block';
+  document.getElementById('contactForm').reset();
+}
+</script>
+</body>
+</html>
